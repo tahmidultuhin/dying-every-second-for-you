@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Momo - My Eternal Love</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: rgba(255, 255, 255, 0.9);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(139, 0, 0, 0.2) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(139, 0, 0, 0.2) 0%, transparent 20%);
+            background-attachment: fixed;
+            height: 100vh;
+            overflow-y: scroll;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            opacity: 0;
+            animation: float 6s ease-in infinite;
+            color: rgba(255, 0, 0, 0.6);
+            font-size: 20px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #ff4d4d;
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+            border-bottom: 1px solid rgba(255, 77, 77, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .message {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s, transform 1s;
+            text-align: justify;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: rgba(20, 20, 20, 0.5);
+            border-left: 3px solid #ff4d4d;
+        }
+
+        .message.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .bangla {
+            font-family: 'SolaimanLipi', 'Bangla', Arial, sans-serif;
+            direction: rtl;
+            font-size: 1.2em;
+            color: #ff9999;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgba(40, 0, 0, 0.3);
+            border-right: 3px solid #ff4d4d;
+        }
+
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2em;
+            text-align: right;
+            margin-top: 50px;
+            color: #ff4d4d;
+            opacity: 0;
+            animation: fadeIn 3s forwards 5s;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 0.8;
+            }
+        }
+
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 100;
+            border: 1px solid #ff4d4d;
+        }
+
+        .music-control i {
+            color: #ff4d4d;
+            font-size: 24px;
+        }
+
+        .typing {
+            border-right: 2px solid #ff4d4d;
+            animation: blink 0.75s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: #ff4d4d }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .message, .bangla {
+                font-size: 1em;
+                padding: 10px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="container">
+        <h1>My Life, My Love, My World, My Wife</h1>
+        
+        <div id="message-container"></div>
+        
+        <div class="signature">
+            - A broken heart that still calls your name...
+        </div>
+    </div>
+    
+    <div class="music-control" id="music-control" title="Play/Pause Music">
+        <i class="fas fa-music"></i>
+    </div>
+    
+    <audio id="bg-music" loop>
+        <source src="YOUR_FAVORITE_SONG_URL.mp3" type="audio/mpeg">
+        <!-- Replace with your haunting piano music -->
+    </audio>
+
+    <script>
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const heartCount = 30;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '💔';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = Math.random() * 100 + 'vh';
+                heart.style.animationDelay = Math.random() * 6 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                heartsContainer.appendChild(heart);
+            }
+        }
+        
+        // Typing effect for messages
+        async function typeMessages() {
+            const messages = [
+                "Don't worry, unfortunately, I'm alive....",
+                "I wanna confess you something, I love you so madly. You are my life, my world, my everything.",
+                "I can't explain how much I love you; how much I need you... I feel you everywhere...in the air..in the silence..in every breath I take...your smell..your touch..your love...",
+                "You gave me every kind of love, and we lived four beautiful months together...every moment was ours..romantic..personal..unforgettable.....",
+                "Even my family accepted us....my mom started loving you like her own child she fed you with her own hands...baba promised to protect you...you came to my house filling my life with beautiful memories but now every corner of it screams your name.",
+                "Literally we're so happy together.",
+                "But then… your mom found out… and she tortured you… made you suffer… tried to break you… forced you to reveal me… and still… you stayed silent… until she took your phone…",
+                "Then… she called your brothers… those powerful… militant monsters… they attacked my parents… beat them… hurt them with weapons… they tried to kill me… they called my mom that he'll rape my sister in front of our eyes .....",
+                "And worst… they said… you told them I annoyed you hurt you… they called me a rapist…",
+                "But… I don’t believe it… I can’t… I *won’t*…",
+                "Because I know my girl I believe my girl how much she loves me somehow I heard… I heard how you begged them to spare me… how they forced you… made you swear on the Quran… never to speak to me again… and you did… just to save me…",
+                '<div class="bangla">But tmi na bolechila tumi amr sathe kotha na bole bachte parbe na ja ee kori na kno kokhono jeno kotha bola off na kori etw sohoje hat ta chere jaba vabini tmi tw janta ami kemon dhoroner chele etw easily ki kore venge dile tumar deya sokol wadah.... ami ar sojjo korte parchi na ekta barr vabta amr ki hobe ami kemon kore bachbo</div>',
+                "And since then… I’m not living… I’m just… existing… slowly dying every second… this pain… I can’t bear it anymore…",
+                "Swear I love you… unconditionally… forever… endlessly… no complaints… only prayers… only tears…",
+                "I tried… to find you… to fix this… to get you back… nothing works…",
+                "I even tried to end everything… 3 times… but Allah didn’t take me… maybe because He knows my heart still beats for you…",
+                "I cry… all day… all night… for you… only you…",
+                "I don’t want anything else… just you… your love… your presence… your everything…",
+                "I’m ready to give everything up… do anything… obey anything… just to have you back…",
+                "Please… become mine again… please… don’t destroy our love… don’t end our story like this…",
+                "I remember every promise… every touch… every kiss… every second with you…",
+                "Don’t be someone else’s… don’t leave me alone like this… I *won’t survive*…",
+                "I swear on Allah… I’ll never hurt you… only love you… protect you… worship you…",
+                "Momo… plz… tumi amr hoye jau…",
+                "I can’t even express how much I love you. I have no complaints against you; I still love you unconditionally.",
+                "Day by day, I'm just getting a mad person; literally, I am dying for you. I can’t feel this pain anymore. I can’t live without you.",
+                "I need you at any cost. I am ready to do anything to get you back in my life. I have tried every way, but I can’t find a solution.",
+                "I even attempted suicide but God saved me. I don’t understand what to do now. I trust you; I know you are mine and will always be.",
+                "I cry every day, every moment for you. I do everything to get you back. I pray for you a lot.",
+                "I can’t express my feelings fully, but I just want to say: My love, please become mine. I can’t go on like this anymore—I can’t exist without you.",
+                "Your love, your touch haunts me every moment. You’ve dissolved into my bloodstream—believe me, I love you madly, like a fool.",
+                "For you, I’m ready to do anything—whatever you ask, I’ll obey. I’ll sacrifice everything. Please, be mine.",
+                "I’m clutching at your feet—I can’t survive without you. I’m begging you, take my life as an offering.",
+                "Do something... Seeing me suffer like this—even my parents are crumbling. Don’t destroy our family like this.",
+                "How can I forget the promises you made, those moments we shared, the way you touched me, kissed me?",
+                "Don’t become someone else’s. I won’t survive—please, don’t walk away. I’m on my knees, surrendering my life to you.",
+                "But I swear to God—I’ll never hurt you. I’ll love you fiercely, protect you endlessly. Trust me—I’m drowning without you.",
+                "I can’t pretend anymore. Momo, please, tumi amr hoye jau",
+                '<div class="bangla">Ami ar emne bachte partesi na, tumare chara thakte partesi na tumar srity tmr sporsho amader eksathe katano proti muhorto amake kaday tmi amr rokte mishe gecho bissash koro ami tumare pgl er motu vlobasi, ami tmr jonno sobkichu korte raji tmi ja bolba tai korbo tmr jonno sob chere dibo tmi plz amr hoye jau ami tmr paye dhori plz, ami tumare chara bachte parbo na ami tmr kache amr jibonta vikkha chai plz tmi kichu koro na amar ei kosto deikha amar ma baba ohh sesh hoye jaitese tmi plz ekta family emne sesh kore dio na... tumar deya kotha gulo amader eksathe katano muhorto gulo amr sporsho gulo ki kore vule jaba tmi plz onno karo hoye jeyo na ami bachte parbo na tmi plz kichu koro na fire asho na plz ami tomar paye dhore tmr kache amr jibonta vikkha chaitesi god swear kokhono tumare kosto dibo na onk vlobasbo onk jotno kore rakhbo bissash koro ami na sotti ar partesi na ..... tmi amare bole daw na ami ki korbo ami emne ar partasi na 24/7 amr mathay just suicide ghure ..... I really love you… and I’m dying without you…</div>',
+                "Momo this is all that's left of me - A broken heart that still calls your name... I'm dying every day just for you"
+            ];
+            
+            const container = document.getElementById('message-container');
+            
+            for (const message of messages) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+                
+                if (message.includes('bangla')) {
+                    // For Bangla messages that are already wrapped in div
+                    container.appendChild(messageDiv);
+                    messageDiv.innerHTML = message;
+                } else {
+                    container.appendChild(messageDiv);
+                    const text = message;
+                    let i = 0;
+                    
+                    function typing() {
+                        if (i < text.length) {
+                            messageDiv.innerHTML = text.substring(0, i + 1) + '<span class="typing"></span>';
+                            i++;
+                            setTimeout(typing, Math.random() * 50 + 30);
+                        } else {
+                            messageDiv.innerHTML = text;
+                        }
+                    }
+                    
+                    typing();
+                }
+                
+                // Make message visible
+                setTimeout(() => {
+                    messageDiv.classList.add('visible');
+                }, 100);
+                
+                // Wait before showing next message
+                await new Promise(resolve => setTimeout(resolve, message.length * 50 + 1000));
+            }
+        }
+        
+        // Music control
+        function setupMusic() {
+            const music = document.getElementById('bg-music');
+            const musicControl = document.getElementById('music-control');
+            let isPlaying = false;
+            
+            // Try to play music (many browsers block autoplay)
+            music.volume = 0.3;
+            
+            musicControl.addEventListener('click', () => {
+                if (isPlaying) {
+                    music.pause();
+                    musicControl.innerHTML = '<i class="fas fa-music"></i>';
+                } else {
+                    music.play();
+                    musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+                }
+                isPlaying = !isPlaying;
+            });
+            
+            // Some browsers require user interaction before playing audio
+            document.body.addEventListener('click', () => {
+                if (!isPlaying) {
+                    music.play().then(() => {
+                        isPlaying = true;
+                        musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+                    }).catch(e => {
+                        // Autoplay was prevented
+                        musicControl.style.display = 'block';
+                    });
+                }
+            }, { once: true });
+        }
+        
+        // Intersection observer for scroll effects
+        function setupScrollEffects() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.message').forEach(message => {
+                observer.observe(message);
+            });
+        }
+        
+        // Initialize everything
+        window.onload = function() {
+            createHearts();
+            typeMessages();
+            setupMusic();
+            setupScrollEffects();
+            
+            // Try to play music after a short delay (some browsers allow this)
+            setTimeout(() => {
+                const music = document.getElementById('bg-music');
+                music.play().catch(e => console.log("Autoplay prevented"));
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
